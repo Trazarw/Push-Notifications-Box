@@ -495,6 +495,11 @@
 	Object.defineProperty(exports, "__esModule", {
 		value: true
 	});
+	
+	var _DB_KEYS;
+	
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+	
 	var version = 1;
 	
 	//This file contains the configuration for local development
@@ -509,7 +514,7 @@
 	};
 	
 	// Keys of the DB in indexedDB. Change for production to meaningless smaller values
-	var DB_KEYS = exports.DB_KEYS = {
+	var DB_KEYS = exports.DB_KEYS = (_DB_KEYS = {
 		NAME: 've-push-db-v' + version,
 		JOURNEY_ID: 'JOURNEY_ID',
 		SESSION_ID: 'SESSION_ID',
@@ -517,7 +522,7 @@
 		VALUE_TO_CAPTURE: 'VALUE_TO_CAPTURE',
 		DEFAULT_NOTIFICATION: 'DEFAULT_NOTIFICATION',
 		PUSH_INFO: 'PUSH_INFO'
-	};
+	}, _defineProperty(_DB_KEYS, 'SESSION_ID', 'SESSION_ID'), _defineProperty(_DB_KEYS, 'SESSION_TIME', 'SESSION_TIME'), _DB_KEYS);
 
 /***/ },
 /* 6 */
@@ -2999,6 +3004,8 @@
 	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	//import Session from './Session';
+	
 	
 	var _DataStore = __webpack_require__(7);
 	
@@ -3047,6 +3054,9 @@
 						captureSettings: veTagData.settings.pushCaptureSettings
 					};
 				}
+				//	this.sessionManager = new Session().init();
+	
+				//	this.settingsData.sessionId;
 			}
 		}
 	
