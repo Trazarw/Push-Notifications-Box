@@ -280,7 +280,7 @@
 	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
-	        value: true
+	    value: true
 	});
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -302,50 +302,50 @@
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
 	var EventLogger = function (_ApiBase) {
-	        _inherits(EventLogger, _ApiBase);
+	    _inherits(EventLogger, _ApiBase);
 	
-	        function EventLogger(journeyId, sessionId, subscriptionId) {
-	                _classCallCheck(this, EventLogger);
+	    function EventLogger(journeyId, sessionId, subscriptionId) {
+	        _classCallCheck(this, EventLogger);
 	
-	                var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(EventLogger).call(this, journeyId, sessionId, subscriptionId));
+	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(EventLogger).call(this, journeyId, sessionId, subscriptionId));
 	
-	                _this.controller = 'EventCollector';
-	                _this.action = 'Send';
+	        _this.controller = 'EventCollector';
+	        _this.action = 'Send';
 	
-	                _this.url = _this.getApiUrl(_this.controller, _this.action);
-	                return _this;
+	        _this.url = _this.getApiUrl(_this.controller, _this.action);
+	        return _this;
+	    }
+	
+	    _createClass(EventLogger, [{
+	        key: 'log',
+	        value: function log(event) {
+	            var eventType = void 0;
+	
+	            switch (event) {
+	                case 'web-sw-register-unknow-error':
+	                    eventType = 3;break;
+	                case 'web-sw-register-not-supported':
+	                    eventType = 4;break;
+	                case 'web-sw-register-success':
+	                    eventType = 5;break;
+	                case 'sw-notification-push':
+	                    eventType = 6;break;
+	                case 'sw-notification-click':
+	                    eventType = 7;break;
+	                case 'sw-notification-close':
+	                    eventType = 8;break;
+	            }
+	
+	            _Logger2.default.info('EventLogger: Event "' + event + '" sent');
+	
+	            var payload = this.getPayload();
+	            payload.eventType = eventType;
+	
+	            return this.fetch(this.url, payload);
 	        }
+	    }]);
 	
-	        _createClass(EventLogger, [{
-	                key: 'log',
-	                value: function log(event) {
-	                        var eventType = void 0;
-	
-	                        switch (event) {
-	                                case 'web-sw-register-unknow-error':
-	                                        eventType = 3;break;
-	                                case 'web-sw-register-not-supported':
-	                                        eventType = 4;break;
-	                                case 'web-sw-register-success':
-	                                        eventType = 5;break;
-	                                case 'sw-notification-push':
-	                                        eventType = 6;break;
-	                                case 'sw-notification-click':
-	                                        eventType = 7;break;
-	                                case 'sw-notification-close':
-	                                        eventType = 8;break;
-	                        }
-	
-	                        _Logger2.default.info('EventLogger: Event "' + event + '" sent');
-	
-	                        var payload = this.getPayload();
-	                        payload.eventType = eventType;
-	
-	                        return this.fetch(this.url, payload);
-	                }
-	        }]);
-	
-	        return EventLogger;
+	    return EventLogger;
 	}(_ApiBase3.default);
 	
 	exports.default = EventLogger;
@@ -524,7 +524,6 @@
 	//This file contains the configuration for local development
 	
 	var API_DOMAIN = exports.API_DOMAIN = 'https://www.mrvoid-prototype.com/api';
-	//export const API_DOMAIN = 'http://localhost:17004/api';
 	
 	// Logger in the console. 0: none; 1: error,warn; 2: error,warn,info; 3:all
 	var LOGGER_MODE = exports.LOGGER_MODE = 3;
