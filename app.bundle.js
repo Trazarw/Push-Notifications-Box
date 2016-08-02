@@ -581,7 +581,6 @@
 		}, {
 			key: 'getPayload',
 			value: function getPayload() {
-				console.log("TEST");
 				return {
 					journeyId: this.journeyId,
 					sessionId: this.sessionId,
