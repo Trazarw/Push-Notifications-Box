@@ -116,7 +116,7 @@
 	                _this.sessionId = clientSettings.sessionId;
 	                _this.pushInfo = clientSettings.pushInfo;
 	
-	                //STORES THE DATA 
+	                //STORES THE DATA
 	                client.saveData(clientSettings);
 	
 	                _this.eventLogger = new _EventLogger2.default(_this.journeyId, _this.sessionId);
@@ -134,9 +134,9 @@
 	                        _this.eventLogger.setSubcriptionId(subcriptionId);
 	                        _this.pushVeCapture.setSubcriptionId(subcriptionId);
 	
-	                        _this.eventLogger.log('web-sw-register-success');
+	                        _this.eventLogger.log('track');
 	                    } else {
-	                        _this.eventLogger.log('web-sw-register-unknow-error');
+	                        _this.eventLogger.log('unknow-error');
 	                    }
 	
 	                    _this.pushVeCapture.init();
@@ -216,7 +216,6 @@
 	var version = 1;
 	
 	//This file contains the configuration for local development
-	
 	var API_DOMAIN = exports.API_DOMAIN = 'https://www.mrvoid-prototype.com/api';
 	
 	// Logger in the console. 0: none; 1: error,warn; 2: error,warn,info; 3:all
@@ -300,7 +299,7 @@
 	                    return _Logger2.default.error('[ServiceWorkerHelper]: ERROR Registering', err);
 	                });
 	            } else {
-	                this._eventLogger.log('web-sw-register-not-supported');
+	                this._eventLogger.log('not-supported');
 	                return false;
 	            }
 	        }
@@ -458,18 +457,14 @@
 	            var eventType = void 0;
 	
 	            switch (event) {
-	                case 'web-sw-register-unknow-error':
+	                case 'unknow-error':
 	                    eventType = 3;break;
-	                case 'web-sw-register-not-supported':
+	                case 'not-supported':
 	                    eventType = 4;break;
-	                case 'web-sw-register-success':
+	                case 'track':
 	                    eventType = 5;break;
-	                case 'sw-notification-push':
+	                case 'click':
 	                    eventType = 6;break;
-	                case 'sw-notification-click':
-	                    eventType = 7;break;
-	                case 'sw-notification-close':
-	                    eventType = 8;break;
 	            }
 	
 	            _Logger2.default.info('EventLogger: Event "' + event + '" sent');
@@ -637,7 +632,7 @@
 	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(PushVeCapture).call(this, journeyId, sessionId, subscriptionId));
 	
 	        _this.urlPath = _config.API_DOMAIN;
-	        _this.controller = 'Capture';
+	        _this.controller = 'Action';
 	
 	        _this._completeURL = clientSettings.completeURL;
 	        _this._basketURL = clientSettings.basketURL;
@@ -659,7 +654,7 @@
 	            payload.eventType = 1;
 	            payload.information = data;
 	
-	            var url = this.getApiUrl(this.controller, 'Abandoment');
+	            var url = this.getApiUrl(this.controller, 'Send');
 	            return this.fetch(url, payload);
 	        }
 	    }, {
@@ -668,7 +663,7 @@
 	            var payload = this.getPayload();
 	            payload.eventType = 2;
 	
-	            var url = this.getApiUrl(this.controller, 'Sale');
+	            var url = this.getApiUrl(this.controller, 'Mark');
 	            return this.fetch(url, payload);
 	        }
 	    }, {

@@ -91,8 +91,6 @@
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
-	var eventLogger = null;
-	
 	var SW = function () {
 	    function SW(self) {
 	        _classCallCheck(this, SW);
@@ -112,7 +110,6 @@
 	            self.addEventListener('message', this.onMessage);
 	            self.addEventListener('push', this.onPush);
 	            self.addEventListener('notificationclick', this.onNotificationClick);
-	            self.addEventListener('notificationclose', this.onNotificationClose);
 	
 	            // self.registration.getSubscription()
 	            //     .then(subscription => {
@@ -120,9 +117,7 @@
 	            //     })
 	            //     .catch(err => Logger.error(logClass, err));
 	
-	            SW.getClientSettings().then(function (clientSettings) {
-	                eventLogger = new _EventLogger2.default(clientSettings.journeyId, clientSettings.sessionId, clientSettings.subscriptionId);
-	            });
+	            // this._eventLogger = new EventLogger(journeyId, sessionId);
 	
 	            return this;
 	        }
@@ -132,8 +127,6 @@
 	            _Logger2.default.info('[SW]: On Push Message ' + JSON.stringify(event, null, 4), event);
 	
 	            var notificationData = null;
-	
-	            SW.swEventLog('sw-notification-push');
 	
 	            console.log(this.defaultUrl);
 	
@@ -155,7 +148,7 @@
 	        key: 'onNotificationClick',
 	        value: function onNotificationClick(event) {
 	            _Logger2.default.info('[SW]: On onNotificationClick ' + JSON.stringify(event, null, 4), event);
-	            SW.swEventLog("sw-notification-click");
+	
 	            event.notification.close();
 	
 	            event.waitUntil(SW.getClientSettings().then(function (clientSettings) {
@@ -196,26 +189,13 @@
 	        key: 'onMessage',
 	        value: function onMessage(event) {
 	            _Logger2.default.info('[SW]: Received Message: ' + event.data);
-	        }
-	    }, {
-	        key: 'onNotificationClose',
-	        value: function onNotificationClose(event) {
-	            _Logger2.default.info('[SW]:  Notification Closed', event);
-	            SW.swEventLog("sw-notification-close");
-	        }
-	    }], [{
-	        key: 'swEventLog',
-	        value: function swEventLog(eventName) {
-	            if (eventLogger) {
-	                SW.getClientSettings().then(function (clientSettings) {
-	                    eventLogger = new _EventLogger2.default(clientSettings.journeyId, clientSettings.sessionId, clientSettings.subscriptionId);
-	                    eventLogger.log(eventName);
-	                });
-	            } else {
-	                eventLogger.log(eventName);
+	
+	            //What is this?
+	            if (event.ports[0]) {
+	                event.ports[0].postMessage("[SW] Says 'Hello back!'");
 	            }
 	        }
-	    }, {
+	    }], [{
 	        key: 'getClientSettings',
 	        value: function getClientSettings(elements) {
 	            var client = new _ClientSettings2.default();
@@ -322,18 +302,14 @@
 	            var eventType = void 0;
 	
 	            switch (event) {
-	                case 'web-sw-register-unknow-error':
+	                case 'unknow-error':
 	                    eventType = 3;break;
-	                case 'web-sw-register-not-supported':
+	                case 'not-supported':
 	                    eventType = 4;break;
-	                case 'web-sw-register-success':
+	                case 'track':
 	                    eventType = 5;break;
-	                case 'sw-notification-push':
+	                case 'click':
 	                    eventType = 6;break;
-	                case 'sw-notification-click':
-	                    eventType = 7;break;
-	                case 'sw-notification-close':
-	                    eventType = 8;break;
 	            }
 	
 	            _Logger2.default.info('EventLogger: Event "' + event + '" sent');
@@ -522,7 +498,6 @@
 	var version = 1;
 	
 	//This file contains the configuration for local development
-	
 	var API_DOMAIN = exports.API_DOMAIN = 'https://www.mrvoid-prototype.com/api';
 	
 	// Logger in the console. 0: none; 1: error,warn; 2: error,warn,info; 3:all
